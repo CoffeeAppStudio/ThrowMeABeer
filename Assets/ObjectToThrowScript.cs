@@ -6,8 +6,8 @@ using UnityEngine;
 public class ObjectToThrowScript : MonoBehaviour
 {
     public static List<ObjectToThrowScript> objectThrown = new List<ObjectToThrowScript>();
-    private float speed = 0.01f;
-    private float friction = 0.0001f;
+    public float speed = 0.01f;
+    public float friction = 0.0001f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +23,7 @@ public class ObjectToThrowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.Translate(Vector3.forward * speed);
+        this.transform.Translate(Vector3.forward * (speed*Time.deltaTime));
     }
 
     public void setSpeed(float spd)

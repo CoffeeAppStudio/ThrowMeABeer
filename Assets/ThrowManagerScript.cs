@@ -27,7 +27,7 @@ public class ThrowManagerScript : MonoBehaviour
     
     float scalePower(float power)
     {
-        power /= (float) Math.Sqrt(Screen.width/2f*Screen.width/2f + Screen.height*Screen.height);
+        power /= Screen.height;
         Debug.Log(power);
         float scaledPower = Math.Max(Math.Min(MaxPower,power),MinPower) * Scaler;
         Debug.Log("afterScale :" + power);
@@ -54,9 +54,9 @@ public class ThrowManagerScript : MonoBehaviour
                         Vector3 direction =  worldPosition - transform.position;
                         Quaternion rotation = Quaternion.LookRotation(direction);
 
-                        float ThrowPower = scalePower((throwCenter - touchPosition).magnitude);
+                        float ThrowPower = scalePower(touchPosition.y - throwCenter.y );
                         indicator.transform.rotation = rotation;
-                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*100);
+                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
                     }
                     
                 }
@@ -73,9 +73,9 @@ public class ThrowManagerScript : MonoBehaviour
                         Vector3 worldPosition = ray.GetPoint(distance);
                         Vector3 direction =  worldPosition - transform.position;
                         Quaternion rotation = Quaternion.LookRotation(direction);
-                        float ThrowPower = scalePower((throwCenter - touchPosition).magnitude);
+                        float ThrowPower = scalePower(touchPosition.y - throwCenter.y);
                         indicator.transform.rotation = rotation;
-                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*100);
+                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
                         GameObject obj = Instantiate(objectToThrow, transform.position, rotation);
 
                         obj.GetComponent<ObjectToThrowScript>().setSpeed(ThrowPower);
