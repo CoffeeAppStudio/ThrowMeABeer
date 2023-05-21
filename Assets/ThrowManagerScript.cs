@@ -1,26 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+
 
 public class ThrowManagerScript : MonoBehaviour
 {
     public GameObject objectToThrow;
-    // Start is called before the first frame update
+    public GameObject povManager;
+    ChangeSceneScript changeSceneScript;
+    
     void Start()
     {
-        
+        changeSceneScript =povManager.GetComponent<ChangeSceneScript>();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        for (int i = 0; i < Input.touchCount; ++i)
+        if (! changeSceneScript.InUI)
         {
-            if (Input.GetTouch(i).phase == TouchPhase.Began)
+            for (int i = 0; i < Input.touchCount; ++i)
             {
-
-                Instantiate(objectToThrow, transform.position, transform.rotation);
-                
+                if (Input.GetTouch(i).phase == TouchPhase.Began)
+                {
+                    Vector3 touchPosition = Input.GetTouch(i).position;
+                    Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+                    Plane plane = new Plane(Vector3.up, transform.position);
+                    if (plane.Raycast(ray, out float distance))
+                    {
+                        Vector3 worldPosition = ray.GetPoint(distance);
+                        Vector3 direction =  worldPosition - transform.position ;
+                        
+                        Quaternion rotation = Quaternion.LookRotation(direction);
+                        
+                        GameObject obj = Instantiate(objectToThrow, transform.position, rotation);
+                        
+                        obj.GetComponent<ObjectToThrowScript>().setSpeed(direction.magnitude*0.001f);
+                    }
+                }
             }
         }
     }
