@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LampToThrow
       objectReference: {fileID: 0}
+    - target: {fileID: 4312685052402825622, guid: 432850c4f9247fc469951dbb22c52ce4, type: 3}
+      propertyPath: m_TagString
+      value: ThrownObject
+      objectReference: {fileID: 0}
     - target: {fileID: 5775598393591353597, guid: 432850c4f9247fc469951dbb22c52ce4, type: 3}
       propertyPath: m_RootOrder
       value: 0

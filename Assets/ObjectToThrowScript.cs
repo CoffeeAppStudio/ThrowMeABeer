@@ -5,54 +5,63 @@ using UnityEngine;
 
 public class ObjectToThrowScript : MonoBehaviour
 {
-    private float lifeTime = 10005f;
-    private float lifeTimer = 0f;
+    public static List<ObjectToThrowScript> objectThrown = new List<ObjectToThrowScript>();
     private float speed = 0.01f;
+    private float friction = 0.0001f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        objectThrown.Add(this);
     }
+
+    private void OnDestroy()
+    {
+        objectThrown.Remove(this);
+    }
+    
 
     // Update is called once per frame
     void Update()
     {
-        
-        lifeTimer += Time.deltaTime;
         this.transform.Translate(Vector3.forward * speed);
-        if (lifeTimer > lifeTime)
-            Destroy(this.gameObject);
-        
     }
 
     public void setSpeed(float spd)
     {
+        //pour éviter le lag, peut ètre virer en release
         speed = spd;
-        lifeTime = 0.1f/speed;
+    }
 
+    public float getSpeed()
+    {
+        return speed;
     }
 
     private void OnCollisionEnter(Collision other)
     {
-
-        if (other.gameObject.CompareTag("saloon"))
+        if (other.gameObject.CompareTag("saloon") || other.gameObject.CompareTag("Tabouret"))
         {
             speed = 0;
+            destroyObject();
         }
     }
     
     private void OnCollisionStay(Collision other)
     {
-
-        if (other.gameObject.CompareTag("bar"))
+        if (other.gameObject.CompareTag("bar") )
         {
             if (speed > 0)
             {
                 Debug.Log("lowering the speed");
-                speed -= 0.00001f;
+                speed -= friction;
             }
                 
         }
+    }
+    
+    public void destroyObject()
+    {
+        Destroy(this.gameObject);
     }
 
 }

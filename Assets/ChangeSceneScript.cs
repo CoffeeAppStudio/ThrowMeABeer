@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class ChangeSceneScript : MonoBehaviour
 {
     
+    public tabouretManager tabouretManager;
+    
     public GameObject ui;
 
     private bool inUI;
@@ -32,6 +34,8 @@ public class ChangeSceneScript : MonoBehaviour
 
     public GameObject camera;
 
+    public bool MovingToUi = false;
+    
     public bool InUI
     {
         get => inUI;
@@ -51,35 +55,71 @@ public class ChangeSceneScript : MonoBehaviour
         Debug.Log("started");
     }
 
+    private bool isMoving = false;
+    
     void Update()
     {
-        camera.transform.position = Vector3.Lerp(camera.transform.position, EndPosition, speed*Time.deltaTime);
-        camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, EndRotation, speed*Time.deltaTime);
+        if (isMoving)
+        {
+            camera.transform.position = Vector3.Lerp(camera.transform.position, EndPosition, speed*Time.deltaTime);
+            camera.transform.rotation = Quaternion.Lerp(camera.transform.rotation, EndRotation, speed*Time.deltaTime);
+            //si la camera a fini son mouvement à une variable pres
+        
+            if (Vector3.Distance(camera.transform.position, EndPosition) < 0.1f)
+            {
+                isMoving = false;
+                InUI = MovingToUi;
+            }
+        }
+        
     }
     
     public void changeScene()
     {
         if(InUI)
         {
-            Debug.Log("ChangeScene to game");
-            camera.transform.position = CameraStartPosition;
-            EndPosition = CameraEndPosition;
-            camera.transform.rotation = CameraStartRotation;
-            EndRotation = CameraEndRotation;
-            ui.SetActive(false);
-            InUI = false;
-            //lerp camera to end position
+            goToGameScene();
         }
         else
         {
-            Debug.Log("ChangeScene to UI");
-            camera.transform.position = CameraEndPosition;
-            EndPosition =  CameraStartPosition;
-            camera.transform.rotation = CameraEndRotation;
-            EndRotation =CameraStartRotation ;
-            ui.SetActive(true);
-            InUI = true;
+            goToUiScene();
             
         }
     }
+
+    public void goToUiScene()
+    {
+        
+        foreach (var ob in ObjectToThrowScript.objectThrown)
+        {
+            ob.destroyObject();
+        }
+        
+        Debug.Log("ChangeScene to UI");
+        camera.transform.position = CameraEndPosition;
+        EndPosition =  CameraStartPosition;
+        camera.transform.rotation = CameraEndRotation;
+        EndRotation =CameraStartRotation ;
+        ui.SetActive(true);
+        isMoving = true;
+        InUI = true;
+        MovingToUi = true;
+        tabouretManager.playAnim(false);
+    }
+
+    public void goToGameScene()
+    {
+        Debug.Log("ChangeScene to game");
+        camera.transform.position = CameraStartPosition;
+        EndPosition = CameraEndPosition;
+        camera.transform.rotation = CameraStartRotation;
+        EndRotation = CameraEndRotation;
+        ui.SetActive(false);
+        isMoving = true;
+        MovingToUi = false;
+        tabouretManager.playAnim();
+    }
+    
+    
+    
 }
