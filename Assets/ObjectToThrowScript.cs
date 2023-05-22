@@ -55,7 +55,6 @@ public class ObjectToThrowScript : MonoBehaviour
                 Debug.Log("lowering the speed");
                 speed -= friction;
             }
-                
         }
     }
     
@@ -63,5 +62,4 @@ public class ObjectToThrowScript : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
-
 }
