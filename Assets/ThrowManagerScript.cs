@@ -2,16 +2,44 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public class Timer_
+{
+    bool ended = true;
+    public bool Ended => ended;
+    float timeLeft = 0 ;
+    public void start(float time)
+    {
+        timeLeft = time;
+        ended = false;
+    }
+    public void update()
+    {
+        if (timeLeft > 0)
+        {
+            ended = false;
+            timeLeft -= Time.deltaTime;
+            Debug.Log(timeLeft);
+        }
+        else
+        {
+            ended = true;
+            timeLeft = 0;
+        }
+    }
+}
 
 public class ThrowManagerScript : MonoBehaviour
 {
 
-    public float MaxPower;
-    public float MinPower;
-    public float Scaler;
+    public float MaxPower = 1;
+    public float MinPower = 0;
+    public float Scaler = 10.5f;
+    public float cooldownSecond = 1;
+    private Timer_ timer = new Timer_();
     
     public GameObject indicator;
     public GameObject objectToThrow;
@@ -36,13 +64,15 @@ public class ThrowManagerScript : MonoBehaviour
     
     void Update()
     {
+        timer.update();
+        
         if (! changeSceneScript.InUI)
         {
-            for (int i = 0; i < Input.touchCount; ++i)
+            if (Input.touchCount > 0)
             {
-                if (Input.GetTouch(i).phase == TouchPhase.Moved || Input.GetTouch(i).phase == TouchPhase.Began)
+                if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    Vector3 touchPosition = Input.GetTouch(i).position;
+                    Vector3 touchPosition = Input.GetTouch(0).position;
 
                     Ray ray = Camera.main.ScreenPointToRay(touchPosition);
                     
@@ -60,9 +90,10 @@ public class ThrowManagerScript : MonoBehaviour
                     }
                     
                 }
-                if (Input.GetTouch(i).phase == TouchPhase.Ended)
+                if (Input.GetTouch(0).phase == TouchPhase.Ended && timer.Ended)
                 {
-                    Vector3 touchPosition = Input.GetTouch(i).position;
+                    timer.start(cooldownSecond);
+                    Vector3 touchPosition = Input.GetTouch(0).position;
 
                     Ray ray = Camera.main.ScreenPointToRay(touchPosition);
 
@@ -82,6 +113,7 @@ public class ThrowManagerScript : MonoBehaviour
                     }
                 }
             }
+        
         }
     }
 }
