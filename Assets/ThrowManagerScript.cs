@@ -1,46 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Timer_
-{
-    bool ended = true;
-    public bool Ended => ended;
-    float timeLeft = 0 ;
-    public void start(float time)
-    {
-        timeLeft = time;
-        ended = false;
-    }
-    public void update()
-    {
-        if (timeLeft > 0)
-        {
-            ended = false;
-            timeLeft -= Time.deltaTime;
-            Debug.Log(timeLeft);
-        }
-        else
-        {
-            ended = true;
-            timeLeft = 0;
-        }
-    }
-}
-
 public class ThrowManagerScript : MonoBehaviour
 {
-
     public float MaxPower = 1;
     public float MinPower = 0;
     public float Scaler = 10.5f;
     public float cooldownSecond = 1;
     private Timer_ timer = new Timer_();
-    
     public GameObject indicator;
     public GameObject objectToThrow;
     public GameObject povManager;
@@ -56,17 +29,15 @@ public class ThrowManagerScript : MonoBehaviour
     float scalePower(float power)
     {
         power /= Screen.height;
-        Debug.Log(power);
         float scaledPower = Math.Max(Math.Min(MaxPower,power),MinPower) * Scaler;
-        Debug.Log("afterScale :" + power);
         return scaledPower ;
     }
     
     void Update()
     {
-        timer.update();
+        timer.update(Time.deltaTime);
         
-        if (! changeSceneScript.InUI)
+        if (! ChangeSceneScript.InUI)
         {
             if (Input.touchCount > 0)
             {

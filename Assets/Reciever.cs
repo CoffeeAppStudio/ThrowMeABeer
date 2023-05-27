@@ -11,21 +11,13 @@ public class Reciever : MonoBehaviour
         if (other.gameObject.CompareTag("ThrownObject"))
         {
             ObjectToThrowScript objScript = other.gameObject.GetComponent<ObjectToThrowScript>();
-            Debug.Log("speed : " + objScript.getSpeed() + "sensivity" + sensitivity);
-            if (objScript.getSpeed() < sensitivity)
-            {
-                Debug.Log("Nice beer bro");
-                //take the beer
-                objScript.setSpeed(0);
-                objScript.destroyObject();
-            }
-            else
-            {
-                Debug.Log("too fast");
-                //don't take the beer
-                objScript.setSpeed(0);
-                objScript.destroyObject();
-            }
+            //take the beer
+            
+            objScript.setSpeed(0);
+            objScript.destroyObject();
+            GetComponentInParent<TabouretSlotScript>().clearSlot();
+        
+
 
         }
     }

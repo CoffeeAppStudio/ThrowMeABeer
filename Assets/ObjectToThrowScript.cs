@@ -52,7 +52,6 @@ public class ObjectToThrowScript : MonoBehaviour
         {
             if (speed > 0)
             {
-                Debug.Log("lowering the speed");
                 speed -= friction;
             }
         }

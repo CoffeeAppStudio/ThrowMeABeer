@@ -12,7 +12,7 @@ public class ChangeSceneScript : MonoBehaviour
     
     public GameObject ui;
 
-    private bool inUI;
+    private static bool inUI;
 
     public Transform StartTransformCamera;
     
@@ -36,7 +36,7 @@ public class ChangeSceneScript : MonoBehaviour
 
     public bool MovingToUi = false;
     
-    public bool InUI
+    public static bool InUI
     {
         get => inUI;
         set => inUI = value;
@@ -95,7 +95,6 @@ public class ChangeSceneScript : MonoBehaviour
             ob.destroyObject();
         }
         
-        Debug.Log("ChangeScene to UI");
         camera.transform.position = CameraEndPosition;
         EndPosition =  CameraStartPosition;
         camera.transform.rotation = CameraEndRotation;
@@ -104,12 +103,11 @@ public class ChangeSceneScript : MonoBehaviour
         isMoving = true;
         InUI = true;
         MovingToUi = true;
-        tabouretManager.playAnim(false);
+        tabouretManager.clearSlots();
     }
 
     public void goToGameScene()
     {
-        Debug.Log("ChangeScene to game");
         camera.transform.position = CameraStartPosition;
         EndPosition = CameraEndPosition;
         camera.transform.rotation = CameraStartRotation;
@@ -117,7 +115,6 @@ public class ChangeSceneScript : MonoBehaviour
         ui.SetActive(false);
         isMoving = true;
         MovingToUi = false;
-        tabouretManager.playAnim();
     }
     
     
