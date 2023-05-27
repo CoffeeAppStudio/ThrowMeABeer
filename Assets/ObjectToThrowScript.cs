@@ -23,6 +23,8 @@ public class ObjectToThrowScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+        this.transform.GetChild(0).Rotate(Vector3.up, speed*Time.deltaTime*100);
         this.transform.Translate(Vector3.forward * (speed*Time.deltaTime));
     }
 
