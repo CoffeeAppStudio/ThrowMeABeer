@@ -11,13 +11,14 @@ public class Reciever : MonoBehaviour
         if (other.gameObject.CompareTag("ThrownObject"))
         {
             ObjectToThrowScript objScript = other.gameObject.GetComponent<ObjectToThrowScript>();
+            TabouretSlotScript tabouretSlotScript = GetComponentInParent<TabouretSlotScript>();
+            float t =  tabouretSlotScript.LifeTime - tabouretSlotScript.Life;
+            GetComponentInParent<TabouretSlotScript>().GetComponentInParent<tabouretManager>().addScore(t);
             //take the beer
-            
             objScript.setSpeed(0);
             objScript.destroyObject();
-            GetComponentInParent<TabouretSlotScript>().clearSlot();
-        
-
+            
+            tabouretSlotScript.clearSlot();
 
         }
     }

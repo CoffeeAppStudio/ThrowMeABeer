@@ -4,23 +4,47 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DefaultNamespace;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.UI;
+
 public class tabouretManager : MonoBehaviour
 {
-    
-    List<Animator> tabouretAnimList = new List<Animator>();
+
+    public Text ScoreDisplay;
     
     List<TabouretSlotScript> tabouretSlotList = new List<TabouretSlotScript>();
+
+    private Timer_ timer;
     
-    Timer_ timer = new Timer_();
+    private float score = 0;
     
+    float Score => score;
+
+    public int getFinalScore()
+    {
+        return (score*100).ConvertTo<int>();
+    }
+    
+    public void resetScore()
+    {
+        score = 0;
+        ScoreDisplay.text = "Score : " + 0;
+    }
+    
+    
+    public void addScore(float scoreToAdd)
+    {
+        score += scoreToAdd;
+        ScoreDisplay.text = "Score : " + getFinalScore();
+    }
     
     
     // Start is called before the first frame update
     void Start()
     {
+        timer = new Timer_();
         tabouretSlotList = this.gameObject.GetComponentsInChildren<TabouretSlotScript>().ToList();
-        //tabouretAnimList = this.gameObject.GetComponentsInChildren<Animator>().ToList();
-
     }
     
 
@@ -31,9 +55,9 @@ public class tabouretManager : MonoBehaviour
 
     public void Update()
     {
+        timer.update(Time.deltaTime);
         if (!ChangeSceneScript.InUI)
         {
-            timer.update(Time.deltaTime);
             if (timer.Ended)
             {
                 //spawn a new tabouret on the slot choosen randomly
@@ -42,19 +66,9 @@ public class tabouretManager : MonoBehaviour
                 tabouretSlotList[randomSlot].spawnTabouret();
             }
         }
-
         
     }
 
-    public void playAnim(bool playForward = true)
-    {
-        foreach (Animator anim in tabouretAnimList)
-        {
-            if(playForward)
-                anim.SetTrigger("goToFloor");
-            else
-                anim.SetTrigger("goToTable");
-        }
-    }
+
     
 }

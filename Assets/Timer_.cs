@@ -5,6 +5,13 @@
         bool ended = true;
         public bool Ended => ended;
         float timeLeft = 0 ;
+
+        public float TimeLeft
+        {
+            get => timeLeft;
+            set => timeLeft = value;
+        }
+
         public void start(float time)
         {
             timeLeft = time;

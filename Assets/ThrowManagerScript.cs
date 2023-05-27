@@ -37,54 +37,49 @@ public class ThrowManagerScript : MonoBehaviour
     {
         timer.update(Time.deltaTime);
         
-        if (! ChangeSceneScript.InUI)
+        if (! ChangeSceneScript.InUI && Input.touchCount > 0)
         {
-            if (Input.touchCount > 0)
+            if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Began)
+                Vector3 touchPosition = Input.GetTouch(0).position;
+
+                Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+                
+                Plane plane = new Plane(Vector3.up, transform.position);
+                    
+                if (plane.Raycast(ray, out float distance))
                 {
-                    Vector3 touchPosition = Input.GetTouch(0).position;
+                    Vector3 worldPosition = ray.GetPoint(distance);
+                    Vector3 direction =  worldPosition - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(direction);
 
-                    Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-                    
-                    Plane plane = new Plane(Vector3.up, transform.position);
-                    
-                    if (plane.Raycast(ray, out float distance))
-                    {
-                        Vector3 worldPosition = ray.GetPoint(distance);
-                        Vector3 direction =  worldPosition - transform.position;
-                        Quaternion rotation = Quaternion.LookRotation(direction);
-
-                        float ThrowPower = scalePower(touchPosition.y - throwCenter.y );
-                        indicator.transform.rotation = rotation;
-                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
-                    }
-                    
-                }
-                if (Input.GetTouch(0).phase == TouchPhase.Ended && timer.Ended)
-                {
-                    timer.start(cooldownSecond);
-                    Vector3 touchPosition = Input.GetTouch(0).position;
-
-                    Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-
-                    Plane plane = new Plane(Vector3.up, transform.position);
-
-                    if (plane.Raycast(ray, out float distance))
-                    {
-                        Vector3 worldPosition = ray.GetPoint(distance);
-                        Vector3 direction =  worldPosition - transform.position;
-                        Quaternion rotation = Quaternion.LookRotation(direction);
-                        float ThrowPower = scalePower(touchPosition.y - throwCenter.y);
-                        indicator.transform.rotation = rotation;
-                        indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
-                        GameObject obj = Instantiate(objectToThrow, transform.position, rotation);
-
-                        obj.GetComponent<ObjectToThrowScript>().setSpeed(ThrowPower);
-                    }
+                    float ThrowPower = scalePower(touchPosition.y - throwCenter.y );
+                    indicator.transform.rotation = rotation;
+                    indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
                 }
             }
-        
+            
+            if (Input.GetTouch(0).phase == TouchPhase.Ended && timer.Ended)
+            {
+                timer.start(cooldownSecond);
+                Vector3 touchPosition = Input.GetTouch(0).position;
+
+                Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+
+                Plane plane = new Plane(Vector3.up, transform.position);
+
+                if (plane.Raycast(ray, out float distance))
+                {
+                    Vector3 worldPosition = ray.GetPoint(distance);
+                    Vector3 direction =  worldPosition - transform.position;
+                    Quaternion rotation = Quaternion.LookRotation(direction);
+                    float ThrowPower = scalePower(touchPosition.y - throwCenter.y);
+                    indicator.transform.rotation = rotation;
+                    indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
+                    GameObject obj = Instantiate(objectToThrow, transform.position, rotation);
+                    obj.GetComponent<ObjectToThrowScript>().setSpeed(ThrowPower);
+                }
+            }
         }
     }
 }
