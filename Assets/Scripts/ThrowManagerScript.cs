@@ -13,6 +13,7 @@ public class ThrowManagerScript : MonoBehaviour
     public float MinPower = 0;
     public float Scaler = 10.5f;
     public float cooldownSecond = 1;
+    public float cooldownSecondClear = 30;
     private Timer_ timer = new Timer_();
     private Timer_ clearCooldownTimer = new Timer_();
     public GameObject indicator;
@@ -32,7 +33,7 @@ public class ThrowManagerScript : MonoBehaviour
     public void reset()
     {
         timer.start(0);
-        clearCooldownTimer.start(0);
+        startClearColldownTimer();
     }
     
     float scalePower(float power)
@@ -106,17 +107,23 @@ public class ThrowManagerScript : MonoBehaviour
         }
     }
 
+    
     public void clearTable()
     {
         if (clearCooldownTimer.Ended)
         {
-            clearButton.enabled = false;
-            clearCooldownTimer.start(30);
+            startClearColldownTimer();
             foreach (ObjectToThrowScript obj in ObjectToThrowScript.objectThrown)
             {
                 obj.destroyObject();
             }
         }
+    }
+
+    private void startClearColldownTimer()
+    {
+        clearButton.enabled = false;
+        clearCooldownTimer.start(cooldownSecondClear);
     }
     
 }

@@ -18,6 +18,12 @@ public class tabouretManager : MonoBehaviour
     private Timer_ timer;
     
     private float score = 0;
+    public static float startTimeSpawnIntervalCustomers = 4;
+    public float probabilitySpawnTwoCustomers = 0.33f;
+
+    public float timeSpawnIntervalCustomers = startTimeSpawnIntervalCustomers; 
+
+    private int bnBeers = 0;
     
     float Score => score;
 
@@ -25,18 +31,47 @@ public class tabouretManager : MonoBehaviour
     {
         return (score*100).ConvertTo<int>();
     }
+
+    public void init()
+    {
+        foreach( var tab in tabouretSlotList)
+        {
+            tab.init();
+        } 
+    }
     
     public void resetScore()
     {
+        timeSpawnIntervalCustomers = startTimeSpawnIntervalCustomers;
+        bnBeers = 0;
         score = 0;
-        ScoreDisplay.text = "Score : " + 0;
+        ScoreDisplay.text = "" + 0;
     }
     
     
     public void addScore(float scoreToAdd)
     {
         score += scoreToAdd;
-        ScoreDisplay.text = "Score : " + getFinalScore();
+        ScoreDisplay.text = "" + getFinalScore();
+    }
+
+    public float getDifficultyCurve()
+    {
+        return TabouretSlotScript.InitiallifeTime - (bnBeers / 20); 
+    }
+
+    public float getSpawnDifficultyCurve()
+    {
+        return startTimeSpawnIntervalCustomers - (bnBeers / 16);
+    }
+    
+    
+    public void beerMatHit()
+    {
+        TabouretSlotScript.setLifeTime(getDifficultyCurve());
+        
+        timeSpawnIntervalCustomers = getSpawnDifficultyCurve();
+        
     }
     
     
@@ -60,10 +95,25 @@ public class tabouretManager : MonoBehaviour
         {
             if (timer.Ended)
             {
-                //spawn a new tabouret on the slot choosen randomly
-                int randomSlot = UnityEngine.Random.Range(0, tabouretSlotList.Count);
-                timer.start(5);
-                tabouretSlotList[randomSlot].spawnTabouret();
+                if (UnityEngine.Random.Range(0, 1f) < probabilitySpawnTwoCustomers)
+                {
+                    int t1,t2;
+                    do
+                    {
+                        t1 = UnityEngine.Random.Range(0, tabouretSlotList.Count);
+                        t2 = UnityEngine.Random.Range(0, tabouretSlotList.Count);
+                    } while (t1 == t2);
+                    tabouretSlotList[t1].spawnTabouret();
+                    tabouretSlotList[t2].spawnTabouret();
+                    timer.start(timeSpawnIntervalCustomers);
+                }
+                else
+                {
+                    int randomSlot = UnityEngine.Random.Range(0, tabouretSlotList.Count);
+                    tabouretSlotList[randomSlot].spawnTabouret();
+                    timer.start(timeSpawnIntervalCustomers);
+                }
+
             }
         }
         

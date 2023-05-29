@@ -148,6 +148,7 @@ public class ChangeSceneScript : MonoBehaviour
         InUI = true;
         MovingToUi = true;
         tabouretManager.clearSlots();
+
         saveMaxScoreToFile();
     }
 
@@ -155,6 +156,7 @@ public class ChangeSceneScript : MonoBehaviour
     {
         throwManagerScript.reset();
         tabouretManager.resetScore();
+        tabouretManager.init();
         camera.transform.position = CameraStartPosition;
         EndPosition = CameraEndPosition;
         camera.transform.rotation = CameraStartRotation;

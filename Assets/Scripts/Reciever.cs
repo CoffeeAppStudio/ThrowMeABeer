@@ -12,8 +12,9 @@ public class Reciever : MonoBehaviour
         {
             ObjectToThrowScript objScript = other.gameObject.GetComponent<ObjectToThrowScript>();
             TabouretSlotScript tabouretSlotScript = GetComponentInParent<TabouretSlotScript>();
-            float t =  tabouretSlotScript.LifeTime - tabouretSlotScript.Life;
+            float t =  TabouretSlotScript.LifeTime - tabouretSlotScript.Life;
             GetComponentInParent<TabouretSlotScript>().GetComponentInParent<tabouretManager>().addScore(t);
+            GetComponentInParent<TabouretSlotScript>().GetComponentInParent<tabouretManager>().beerMatHit();
             //take the beer
             objScript.setSpeed(0);
             objScript.destroyObject();

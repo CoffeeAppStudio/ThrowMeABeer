@@ -12,11 +12,31 @@ public class TabouretSlotScript : MonoBehaviour
     // Start is called before the first frame update
 
     private float life = 0;
-    public float lifeTime = 10;
-
-    public float LifeTime => lifeTime;
+    public static float InitiallifeTime = 10;
+    
+    private static float lifeTime = 10;
+    
+    public static float LifeTime => lifeTime;
+    
+    public static void setLifeTime(float newLifeTime)
+    {
+        lifeTime = newLifeTime;
+    }
+    
+    
     public float Life => life;
 
+    private void Start()
+    {
+        init();
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
+
+    public void init()
+    {
+        lifeTime = InitiallifeTime;
+    }
+    
     private void Update()
     {
         if (tabouretInstanciated)
@@ -38,7 +58,7 @@ public class TabouretSlotScript : MonoBehaviour
         {
             life = 0;
             tabouretInstanciated = true;
-            instanciatedTabouret = Instantiate(tabouret, this.transform.position + Vector3.up,transform.rotation);
+            instanciatedTabouret = Instantiate(tabouret, this.transform.position,transform.rotation);
             instanciatedTabouret.transform.parent = this.transform;
             transform.GetChild(1).GetComponent<Animator>().SetTrigger("goToFloor");
         }
