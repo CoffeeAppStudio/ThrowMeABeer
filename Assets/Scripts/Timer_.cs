@@ -5,7 +5,9 @@
         bool ended = true;
         public bool Ended => ended;
         float timeLeft = 0 ;
+        float initialTime = 0;
 
+        public float Percentage => 1- (timeLeft / initialTime);
         public float TimeLeft
         {
             get => timeLeft;
@@ -14,6 +16,7 @@
 
         public void start(float time)
         {
+            initialTime = time;
             timeLeft = time;
             ended = false;
         }

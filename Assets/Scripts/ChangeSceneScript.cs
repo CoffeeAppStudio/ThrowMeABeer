@@ -16,6 +16,8 @@ public class ChangeSceneScript : MonoBehaviour
     private string MaxScore;
     public tabouretManager tabouretManager;
     
+    public ThrowManagerScript throwManagerScript;
+    
     public GameObject ui;
 
     public GameObject gameUI;
@@ -135,6 +137,7 @@ public class ChangeSceneScript : MonoBehaviour
         {
             ob.destroyObject();
         }
+        throwManagerScript.reset();
         camera.transform.position = CameraEndPosition;
         EndPosition =  CameraStartPosition;
         camera.transform.rotation = CameraEndRotation;
@@ -150,6 +153,7 @@ public class ChangeSceneScript : MonoBehaviour
 
     public void goToGameScene()
     {
+        throwManagerScript.reset();
         tabouretManager.resetScore();
         camera.transform.position = CameraStartPosition;
         EndPosition = CameraEndPosition;
