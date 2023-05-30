@@ -6,10 +6,16 @@ using UnityEngine;
 public class Reciever : MonoBehaviour
 {
     public float sensitivity = 0.01f;
+
+    
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("ThrownObject"))
         {
+            MainAudioPlayerScript.instance.playBell();
+            
             ObjectToThrowScript objScript = other.gameObject.GetComponent<ObjectToThrowScript>();
             TabouretSlotScript tabouretSlotScript = GetComponentInParent<TabouretSlotScript>();
             float t =  TabouretSlotScript.LifeTime - tabouretSlotScript.Life;
@@ -18,9 +24,7 @@ public class Reciever : MonoBehaviour
             //take the beer
             objScript.setSpeed(0);
             objScript.destroyObject();
-            
             tabouretSlotScript.clearSlot();
-
         }
     }
 }

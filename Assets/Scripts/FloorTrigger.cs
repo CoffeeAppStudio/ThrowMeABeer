@@ -11,6 +11,7 @@ public class FloorTrigger : MonoBehaviour
     {
         if (other.gameObject.CompareTag("ThrownObject"))
         {
+            MainAudioPlayerScript.instance.playBrokenGlass();
             povManager.GetComponent<ChangeSceneScript>().changeScene();
         }
     }

@@ -52,10 +52,12 @@ public class ObjectToThrowScript : MonoBehaviour
         }
         
 
-        if (other.gameObject.CompareTag("ThrownObject") && !checked_)
+        if (other.gameObject.CompareTag("ThrownObject") )
         {
-            if (speed > other.gameObject.GetComponent<ObjectToThrowScript>().getSpeed())
+            
+            if (speed > other.gameObject.GetComponent<ObjectToThrowScript>().getSpeed() && !checked_)
             {
+                MainAudioPlayerScript.instance.playGlassColliding();
                 checked_ = true;
                 Vector3 collisionNormal = other.contacts[0].normal;
                 Vector3 newDirection = Vector3.Reflect(transform.forward, collisionNormal);
@@ -66,6 +68,22 @@ public class ObjectToThrowScript : MonoBehaviour
                 speed *=0.5f;
             }
 
+        }
+        else if (!other.gameObject.CompareTag("bar"))
+        {
+            MainAudioPlayerScript.instance.playGlassColliding();
+            Vector3 collisionNormal = other.contacts[0].normal;
+            Vector3 newDirection = Vector3.Reflect(transform.forward, collisionNormal);
+            transform.rotation = Quaternion.LookRotation(newDirection, Vector3.up);
+            if (speed == 0)
+            {
+                speed = 0.01f;
+            }
+            else
+            {
+                speed *= 0.6f;
+            }
+            
         }
         
         

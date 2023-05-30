@@ -47,6 +47,8 @@ public class ChangeSceneScript : MonoBehaviour
     public bool MovingToUi = false;
 
     public Text MaxScoreDisplay;
+
+    public MainAudioPlayerScript mainAudioScript;
     
     public static bool InUI
     {

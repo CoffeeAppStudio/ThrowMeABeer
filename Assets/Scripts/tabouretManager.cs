@@ -11,6 +11,8 @@ using UnityEngine.UI;
 public class tabouretManager : MonoBehaviour
 {
 
+    public MainAudioPlayerScript mainAudioScript;
+    
     public Text ScoreDisplay;
     
     List<TabouretSlotScript> tabouretSlotList = new List<TabouretSlotScript>();
@@ -80,6 +82,7 @@ public class tabouretManager : MonoBehaviour
     {
         timer = new Timer_();
         tabouretSlotList = this.gameObject.GetComponentsInChildren<TabouretSlotScript>().ToList();
+        
     }
     
 

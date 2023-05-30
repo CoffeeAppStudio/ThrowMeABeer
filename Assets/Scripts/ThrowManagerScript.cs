@@ -102,6 +102,7 @@ public class ThrowManagerScript : MonoBehaviour
                     indicator.transform.localScale = new Vector3(1,1, ThrowPower*0.7f);
                     GameObject obj = Instantiate(objectToThrow, transform.position, rotation);
                     obj.GetComponent<ObjectToThrowScript>().setSpeed(ThrowPower);
+                    MainAudioPlayerScript.instance.playThrowSound();
                 }
             }
         }

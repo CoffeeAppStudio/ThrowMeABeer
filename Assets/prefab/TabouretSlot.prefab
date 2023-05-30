@@ -142,8 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06b692f717eb1a46af79c05cac3e70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tabouret: {fileID: 4235666901553267590, guid: 4054e4c8af18cc641bb9e293fa65a74a, type: 3}
-  lifeTime: 10
+  tabouret: {fileID: 2122701263424578501, guid: fca91c160381a5044a690017afb4b0f5, type: 3}
 --- !u!1 &8590730287133538240
 GameObject:
   m_ObjectHideFlags: 0
