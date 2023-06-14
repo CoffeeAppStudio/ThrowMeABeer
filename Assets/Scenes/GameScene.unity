@@ -1410,7 +1410,7 @@ PrefabInstance:
     - target: {fileID: 3976454071414617168, guid: b7567e239a48c2f47ad5b1fd482ea6e1, type: 3}
       propertyPath: objectToThrow
       value: 
-      objectReference: {fileID: 7099147777256090338, guid: a4cfbf17c04db154c9ef181db661a6dd, type: 3}
+      objectReference: {fileID: 1544171141179109597, guid: 7c238dc00fbd7de49b9dc451dc7b8979, type: 3}
     - target: {fileID: 3976454071414617168, guid: b7567e239a48c2f47ad5b1fd482ea6e1, type: 3}
       propertyPath: cooldownSecond
       value: 1
