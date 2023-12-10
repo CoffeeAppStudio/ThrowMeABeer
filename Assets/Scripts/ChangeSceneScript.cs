@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class ChangeSceneScript : MonoBehaviour
     public GameObject ui;
 
     public GameObject gameUI;
+
+    public GameObject paramUi;
 
     private static bool inUI;
 
@@ -80,6 +83,7 @@ public class ChangeSceneScript : MonoBehaviour
         reader.Close();
         ui.SetActive(true);
         gameUI.SetActive(false);
+        paramUi.SetActive(false);
         CameraStartPosition = StartTransformCamera.position;
         CameraStartRotation = StartTransformCamera.rotation;
         CameraEndPosition = EndTransformCamera.position;
@@ -168,4 +172,19 @@ public class ChangeSceneScript : MonoBehaviour
         isMoving = true;
         MovingToUi = false;
     }
+
+    public void openParameters()
+    {
+        ui.SetActive(false);
+        gameUI.SetActive(false);
+        paramUi.SetActive(true);
+    }
+    
+    public void closeParameters()
+    {
+        ui.SetActive(true);
+        gameUI.SetActive(false);
+        paramUi.SetActive(false);
+    }
+    
 }
